@@ -16,9 +16,10 @@ Auth::routes();
 Route::middleware(['auth'])->group(function() {
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index')->name('home');
-
-    Route::post('/exchange', 'ExchangesController@post')->name('exchange');
-    
+    Route::get('/', 'UsersController@index')->name('user');
+    Route::get('/exchange', 'ExchangesController@index')->name('exchange');
+    Route::get('/user', 'UsersController@index')->name('user');
+    Route::post('/exchange', 'ExchangesController@post')->name('exchange.post');
 });
 
 

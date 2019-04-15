@@ -13,8 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    <form action="{{ route('exchange') }}" method="POST">
+                        
+                    </form>
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ class UserResource extends JsonResource
     {        
         foreach($this->balance as $bal){
             $response[] = [
+                'balance_id' => $bal->id,
                 'name' => $bal->currency->name,
                 'amount' => $bal->amount,
             ];

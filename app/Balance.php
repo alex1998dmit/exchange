@@ -18,4 +18,9 @@ class Balance extends Model
     {
         return $this->belongsTo('App\Currency');
     }
+
+    public function exchange() 
+    {
+        return $this->hasMany('App\Exchange');
+    }
 }

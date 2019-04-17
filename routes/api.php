@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Http\Request;
+
+use App\Http\Resources\ExchangesCollection;
+use App\Http\Resources\UserResource;
+
 use App\User;
 use App\Balance;
 use App\Exchange;
-use App\Http\Resources\UserResource;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -69,5 +72,22 @@ Route::post('/exchange', function(Request $request) {
         $received_balance->save();
     }
     return new UserResource($user);
+});
+
+Route::get('/user/stats', function(Request $request) {
+    // Переделать в будущем, продумать лучшую структуру для хранения информации о пользователи в транзакциях ??
+    $period = $request['period'];
+    $user_id = 1;
+
+    // Можно заменить добавив в сущность транзакций пользователя ???
+    $balances = Balance::where('user_id', '=', 1)->get();
+    $balances_id = [];
+
+    foreach($balances as $balance) {
+        array_push($balances_id, $balance->id);
+    }
+
+    $exchanges = Exchange::whereDate('date', Carbon::today())->whereIn('exchanged_currency', $balances_id)->get();
+    return new ExchangesCollection($exchanges);
 });
 

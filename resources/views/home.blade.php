@@ -22,6 +22,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>У Вас иммется: </label>
+                            <input type="text" class="form-control" name="rate" value="100" disabled>
+                        </div>
+
+                        <div class="form-group">
                             <label for="received_currency">Какой кошель пополняем, Господин ?</label>
                             <select class="form-control" id="received_currency" name="received_cur">
                                 <option>Американцев поддерживаю (доллары)</option>

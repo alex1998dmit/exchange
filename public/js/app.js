@@ -36833,6 +36833,10 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./exchange */ "./resources/js/exchange.js");
+
+__webpack_require__(/*! ./stat */ "./resources/js/stat.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -36890,6 +36894,52 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/exchange.js":
+/*!**********************************!*\
+  !*** ./resources/js/exchange.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./resources/js/stat.js":
+/*!******************************!*\
+  !*** ./resources/js/stat.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  var url = "/api/user/stats";
+  $.ajax({
+    url: url,
+    type: 'GET',
+    data: {
+      'token': CSRF_TOKEN
+    },
+    dataType: 'json'
+  }).done(function (_ref) {
+    var data = _ref.data;
+    console.log(data);
+    var exchangesBlock = $('#exchanges-block');
+    data.forEach(function (elem) {
+      var exchangeBlock = "\n        <div class=\"card\">\n          <div class=\"card-body\">\n            <p>Exchanged currency: ".concat(elem.exchanged_currency, "</p>\n            <p>Amount: ").concat(elem.amount, "</p>\n            <p>Received currency: ").concat(elem.received_currency, "</p>\n            <p>Rate: ").concat(elem.rate, "</p>\n            <p>Date: ").concat(elem.date, "</p>\n          </div>\n        </div>\n      ");
+      exchangesBlock.append(exchangeBlock);
+    });
+  });
+});
 
 /***/ }),
 

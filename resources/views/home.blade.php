@@ -56,9 +56,5 @@
         </div>
     </div>
 </div>
-<script>
-    console.log(jQuery(document));
-    // const $ = require('jquery');
-</script>
 @endsection
 

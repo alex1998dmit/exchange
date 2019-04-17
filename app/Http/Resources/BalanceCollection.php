@@ -13,8 +13,12 @@ class BalanceCollection extends ResourceCollection
      * @return array
      */
     public function toArray($request)
-    {
-
+    {        
+        $balances = $this->collection;
+        
+        // foreach($balances as $balance) {
+        //     dd($balance);
+        // }
         return [
             'amount' => $this->collection,
         ];

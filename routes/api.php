@@ -33,6 +33,5 @@ Route::post('/test', function(Request $request) {
 Route::get('/user', function(Request $request) {
     $id  = $request['id'];
     $user = User::find($id);
-    $balances = $user->balance;
     return new UserResource($user);
 });

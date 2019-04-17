@@ -28,7 +28,9 @@ Route::middleware(['auth'])->group(function() {
         // dd($user->balance());
         $balance = Balance::find(1);
         // $currencey = Currency::find(1);
-        dd($balance->currency);
+        print_r($balance->currency->name);
+        // $balance->currency->
+        
     });
 
 

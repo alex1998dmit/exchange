@@ -18,13 +18,17 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {        
-        // return parent::toArray($request);
-        $balances = $this->balance;
-        $currencies_name = $balances->cur
+        foreach($this->balance as $bal){
+            $response[] = [
+                'name' => $bal->currency->name,
+                'amount' => $bal->amount,
+            ];
+        }
+
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'balances' => new BalanceCollection($this->balance),
+            'balances' => $response,
         ];
     }
 }

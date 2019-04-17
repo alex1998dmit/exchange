@@ -1,5 +1,8 @@
 <?php
 
+use App\User;
+use App\Balance;
+use App\Currency;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,5 +21,16 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/exchange', 'ExchangesController@index')->name('exchange');
     Route::get('/user', 'UsersController@index')->name('user');
+
+
+    Route::get('/test/{id}', function($id) {
+        $user = User::find($id);
+        // dd($user->balance());
+        $balance = Balance::find(1);
+        // $currencey = Currency::find(1);
+        dd($balance->currency);
+    });
+
+
     Route::post('/exchange', 'ExchangesController@post')->name('exchange.post');
 });

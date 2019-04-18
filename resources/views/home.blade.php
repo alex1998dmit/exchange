@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <label>У Вас иммется: </label>
-                            <input type="text" class="form-control" name="rate" value="100" disabled>
+                            <input type="text" class="form-control" id="exchange_balance" name="rate" value="100" disabled>
                         </div>
 
                         <div class="form-group">

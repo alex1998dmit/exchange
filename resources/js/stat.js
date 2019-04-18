@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 $(document).ready(() => {
   $.ajaxSetup({
     headers: {
@@ -14,7 +16,6 @@ $(document).ready(() => {
     data: { 'token': CSRF_TOKEN },
     dataType: 'json',
   }).done(({ data }) => {
-    console.log(data);
     const exchangesBlock = $('#exchanges-block');
     data.forEach((elem) => {
       const exchangeBlock = `

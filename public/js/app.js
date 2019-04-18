@@ -36909,7 +36909,6 @@ $(document).ready(function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
   var exchanged_balances_list = $('#exchanged_currency');
   var received_balances_list = $('#received_currency');
@@ -36921,8 +36920,24 @@ $(document).ready(function () {
   var prepare_form = function prepare_form() {
     var form_name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'form';
     var data = arguments.length > 1 ? arguments[1] : undefined;
-    var options_data = 12;
-    $('#exchanged_currency').append("<option value=\"foo\">foo</option>").append("<option value=\"bar\">bar</option>");
+    var url = "/api/user";
+    $.ajax({
+      url: url,
+      type: 'GET',
+      data: {
+        'token': CSRF_TOKEN
+      },
+      dataType: 'json'
+    }).done(function (_ref) {
+      var data = _ref.data;
+      console.log(data); // data.forEach((elem) => {
+      //   const exchangeBlock = `
+      //   `;
+      // //   exchangesBlock.append(exchangeBlock);
+      // })
+    }); // $('#exchanged_currency')
+    // .append(`<option value="foo">foo</option>`)
+    // .append(`<option value="bar">bar</option>`)
   };
 
   $(document).on("change", '#exchanged_currency', function (e) {

@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <form action="{{ route('exchange.post') }}" method="POST">
+                    <form action="" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="exchanged_currency">Ваш счет для списания</label>
@@ -46,8 +46,7 @@
                             <input type="text" class="form-control" id="amount">
                         </div>
 
-                        <input type="submit">
-
+                        <button type="submit" id="exchange_button">Транзакция</button>
                     </form>
                 </div>
             </div>

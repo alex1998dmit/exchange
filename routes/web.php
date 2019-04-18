@@ -9,6 +9,8 @@ use App\Balance;
 use App\Exchange;
 use App\Currency;
 use Carbon\Carbon;
+
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +36,8 @@ Route::middleware(['auth'])->group(function() {
         return new UserResource($user);
     });
 
-    Route::post('api/exchange', function(Request $request) {
+    Route::any('api/exchange', function (Request $request) {
+
         $exchanged_id = $request['exchanged_cur'];
         $received_id = $request['received_cur'];
         $amount = $request['amount'];
@@ -63,6 +66,7 @@ Route::middleware(['auth'])->group(function() {
             $exchanged_balance->save();
             $received_balance->save();
         }
+        
         return new UserResource($user);
     });
 

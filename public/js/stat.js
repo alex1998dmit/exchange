@@ -11444,17 +11444,73 @@ try {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utilities */ "./resources/js/utilities.js");
+
+
+
+var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldRate) {
+  return Math.round((newRate - oldRate) * 100) / 100;
+};
+
+var showExchanges = function showExchanges(exchanges, currentRates) {
+  var blockWithAllExchanges = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#exchanges-block');
+  exchanges.forEach(function (exchange) {
+    var currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
+    var blockOfExchange = "\n      <div class=\"card\">\n        <div class=\"card-body\">\n          <p>Exchanged currency: ".concat(exchange.exchanged_currency, "</p>\n          <p>Amount: ").concat(exchange.amount, "</p>\n          <p>Received currency: ").concat(exchange.received_currency, "</p>\n          <p>Rate: ").concat(exchange.rate, "</p>\n          <p>Date: ").concat(exchange.date, "</p>\n          <p>Difference: ").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</p>\n        </div>\n      </div>\n    ");
+    blockWithAllExchanges.append(blockOfExchange);
+  });
+};
+
+var showTodayExchanges = function showTodayExchanges(url, currentRates, token) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    url: url,
+    type: 'GET',
+    data: {
+      token: token
+    },
+    dataType: 'json'
+  }).done(function (_ref) {
+    var data = _ref.data;
+    showExchanges(data, currentRates);
+  });
+};
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  var CSRF_TOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content');
+  var exchangeUrl = "/api/user/stats";
+  var rateUrl = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
+  Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["updateRate"])(rateUrl).then(function (data) {
+    var currentRates = JSON.parse(data).Valute;
+    showTodayExchanges(exchangeUrl, currentRates, CSRF_TOKEN);
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/utilities.js":
+/*!***********************************!*\
+  !*** ./resources/js/utilities.js ***!
+  \***********************************/
+/*! exports provided: updateRate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRate", function() { return updateRate; });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-
 
 var updateRate =
 /*#__PURE__*/
@@ -11467,7 +11523,7 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
+            return $.ajax({
               type: 'GET',
               url: url
             });
@@ -11488,48 +11544,6 @@ function () {
   };
 }();
 
-var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldRate) {
-  return Math.round((newRate - oldRate) * 100) / 100;
-};
-
-var showExchanges = function showExchanges(exchanges, currentRates) {
-  var blockWithAllExchanges = jquery__WEBPACK_IMPORTED_MODULE_1___default()('#exchanges-block');
-  exchanges.forEach(function (exchange) {
-    var currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
-    var blockOfExchange = "\n      <div class=\"card\">\n        <div class=\"card-body\">\n          <p>Exchanged currency: ".concat(exchange.exchanged_currency, "</p>\n          <p>Amount: ").concat(exchange.amount, "</p>\n          <p>Received currency: ").concat(exchange.received_currency, "</p>\n          <p>Rate: ").concat(exchange.rate, "</p>\n          <p>Date: ").concat(exchange.date, "</p>\n          <p>Difference: ").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</p>\n        </div>\n      </div>\n    ");
-    blockWithAllExchanges.append(blockOfExchange);
-  });
-};
-
-var showTodayExchanges = function showTodayExchanges(url, currentRates, token) {
-  jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
-    url: url,
-    type: 'GET',
-    data: {
-      token: token
-    },
-    dataType: 'json'
-  }).done(function (_ref2) {
-    var data = _ref2.data;
-    showExchanges(data, currentRates);
-  });
-};
-
-jquery__WEBPACK_IMPORTED_MODULE_1___default()(document).ready(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  var CSRF_TOKEN = jquery__WEBPACK_IMPORTED_MODULE_1___default()('meta[name="csrf-token"]').attr('content');
-  var exchangeUrl = "/api/user/stats";
-  var rateUrl = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
-  updateRate(rateUrl).then(function (data) {
-    var currentRates = JSON.parse(data).Valute;
-    showTodayExchanges(exchangeUrl, currentRates, CSRF_TOKEN);
-  });
-});
-
 /***/ }),
 
 /***/ 1:
@@ -11539,7 +11553,7 @@ jquery__WEBPACK_IMPORTED_MODULE_1___default()(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/stat.js */"./resources/js/stat.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/stat.js */"./resources/js/stat.js");
 
 
 /***/ })

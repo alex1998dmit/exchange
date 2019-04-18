@@ -36904,6 +36904,20 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+<<<<<<< HEAD
+=======
+
+
+/***/ }),
+
+/***/ "./resources/js/stat.js":
+/*!******************************!*\
+  !*** ./resources/js/stat.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+>>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 $(document).ready(function () {
   $.ajaxSetup({
     headers: {
@@ -36911,6 +36925,7 @@ $(document).ready(function () {
     }
   });
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+<<<<<<< HEAD
   var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
   var exchanged_balances_list = $('#exchanged_currency');
   var received_balances_list = $('#received_currency');
@@ -36953,10 +36968,30 @@ $(document).ready(function () {
     });
   });
   prepare_form();
+=======
+  var url = "/api/user/stats";
+  $.ajax({
+    url: url,
+    type: 'GET',
+    data: {
+      'token': CSRF_TOKEN
+    },
+    dataType: 'json'
+  }).done(function (_ref) {
+    var data = _ref.data;
+    console.log(data);
+    var exchangesBlock = $('#exchanges-block');
+    data.forEach(function (elem) {
+      var exchangeBlock = "\n        <div class=\"card\">\n          <div class=\"card-body\">\n            <p>Exchanged currency: ".concat(elem.exchanged_currency, "</p>\n            <p>Amount: ").concat(elem.amount, "</p>\n            <p>Received currency: ").concat(elem.received_currency, "</p>\n            <p>Rate: ").concat(elem.rate, "</p>\n            <p>Date: ").concat(elem.date, "</p>\n          </div>\n        </div>\n      ");
+      exchangesBlock.append(exchangeBlock);
+    });
+  });
+>>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 });
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./resources/js/stat.js":
 /*!******************************!*\
   !*** ./resources/js/stat.js ***!
@@ -36968,6 +37003,8 @@ console.log('test');
 
 /***/ }),
 
+=======
+>>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!

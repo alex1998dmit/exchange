@@ -36909,25 +36909,26 @@ $(document).ready(function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
-  var exchanged_balances_list = $('#exchanged_currency');
-  var received_balances_list = $('#received_currency');
+  var exchange_currency_id;
+  var exchanged_balance_amount;
+  var received_currency_id;
+  var rate;
+  var amount;
+  var amount_warning_sign = false;
 
   var show_exchange_balance = function show_exchange_balance(input, value) {
     $(input).val(value);
   };
 
-  var prepare_form = function prepare_form() {
-    var form_name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'form';
-    var data = arguments.length > 1 ? arguments[1] : undefined;
-    var options_data = 12;
-    $('#exchanged_currency').append("<option value=\"foo\">foo</option>").append("<option value=\"bar\">bar</option>");
+  var generateBalances = function generateBalances(balances) {
+    var exchange_input = $('#exchanged_currency');
+    var exchange_balance = balances.filter(function (el) {
+      return el.name === 'RUB';
+    });
   };
 
-  $(document).on("change", '#exchanged_currency', function (e) {
-    console.log('changed option'); // Исправить запрос на запрос без проксирования, решить проблему с корс
-
+  var buildReceivedBalancesMenu = function buildReceivedBalancesMenu() {
     $.ajax({
       type: 'GET',
       url: "https://cors-anywhere.herokuapp.com/".concat(currencies_url),
@@ -36935,10 +36936,69 @@ $(document).ready(function () {
         var rates_json = JSON.parse(data);
         var date_refresh = rates_json.Date;
         var rates = rates_json.Valute;
-        console.log(rates); // let exchange_currency = $('#exchange_balance').attr('id');
-        // show_exchange_balance('#exchange_balance');
+        var received_currency_id = $('#received_currency').children(":selected").attr("id");
+        var received_currency_name = $('#received_currency').children(":selected").data("name");
+        var rate_full_value = rates[received_currency_name].Value;
+        rate = Math.floor(rate_full_value * 100) / 100;
+        $("#rate").val(rate);
       }
     });
+  };
+
+  var prepare_form = function prepare_form() {
+    var form_name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'form';
+    var data = arguments.length > 1 ? arguments[1] : undefined;
+    var url = "/api/user";
+    buildReceivedBalancesMenu();
+    $.ajax({
+      url: url,
+      type: 'GET',
+      data: {
+        'token': CSRF_TOKEN
+      },
+      dataType: 'json'
+    }).done(function (json_response) {
+      var balances = json_response.data.balances; // Отрефакторить чтобы был не массив, добавить в отдельную функцию
+
+      var exchange_balance_json = balances.filter(function (el) {
+        return el.name === 'RUB';
+      });
+      exchanged_balance_amount = exchange_balance_json[0].amount;
+      var exchange_balance_name = exchange_balance_json[0].name;
+      exchange_currency_id = exchange_balance_json[0].balance_id;
+      $('#exchange_balance').val(exchanged_balance_amount);
+      $('#exchange_currency').val(exchange_balance_name);
+      var received_balances = balances.filter(function (el) {
+        return el.name !== 'RUB';
+      });
+      received_balances.forEach(function (el) {
+        return $("#received_currency").append("<option id=".concat(el.balance_id, " data-name=").concat(el.name, ">").concat(el.name, "  ").concat(el.amount, "</option>"));
+      });
+    });
+  };
+
+  $(document).on("change", '#received_currency', function (e) {
+    console.log('changed option'); // Исправить запрос на запрос без проксирования, решить проблему с корс
+
+    buildReceivedBalancesMenu();
+  });
+  $(document).on("keyup", '#amount_to_exchange', function (e) {
+    amount = $(this).val();
+    var max_amount_received = Math.floor(exchanged_balance_amount / rate * 100) / 100;
+    var amount_received = Math.floor(amount * rate * 100) / 100;
+
+    if (exchanged_balance_amount < rate * amount) {
+      if (!amount_warning_sign) {
+        $('#amount_label').append("<h5 id=\"amount_warning_sign\" style=\"color:red\">\u0423 \u0432\u0430\u0441 \u043D\u0435\u0434\u043E\u0441\u0442\u0430\u0442\u043E\u0447\u043D\u043E \u0441\u0440\u0435\u0434\u0441\u0442\u0432 \u043D\u0430 \u0441\u0447\u0435\u0442\u0443,\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u043B\u044F \u043E\u0431\u043C\u0435\u043D\u0430: ".concat(max_amount_received, " </h5>"));
+        amount_warning_sign = true;
+        amount_received = max_amount_received;
+      }
+    } else {
+      $('#amount_warning_sign').remove();
+      amount_warning_sign = false;
+    }
+
+    $("#amount").val(amount_received);
   });
   prepare_form();
 });
@@ -36963,8 +37023,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

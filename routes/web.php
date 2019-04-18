@@ -1,8 +1,14 @@
 <?php
 
+
+use App\Http\Resources\ExchangesCollection;
+use App\Http\Resources\UserResource;
+
 use App\User;
 use App\Balance;
+use App\Exchange;
 use App\Currency;
+use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,12 +38,9 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::get('api/user', function(Request $request) {
-        // $userId = Auth::id();
         $userId = Auth::user()->id;
-        // $id  = Auth::user()->id;
         $user = User::find($userId);
-        return json_encode(['user_id' => 'dsadsfas']);
-        // return new UserResource($user);
+        return new UserResource($user);
     });
 
 

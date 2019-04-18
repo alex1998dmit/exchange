@@ -16,38 +16,34 @@
                     <form action="{{ route('exchange.post') }}" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="exchanged_currency">Выберите счет для списания</label>
-                            <select class="form-control" id="exchanged_currency" name="exchanged_cur">
-                                <option> Православный счет(Рубль   500)</option>
-                                <option>Второй секретный счет</option>
-                            </select>
+                            <label for="exchanged_currency">Ваш счет для списания</label>
+                            <input type="text" class="form-control" id="exchange_currency" name="rate" disabled>
                         </div>
 
                         <div class="form-group">
-                            <label>У Вас иммется: </label>
-                            <input type="text" class="form-control" id="exchange_balance" name="rate" value="100" disabled>
+                            <label>На счету у вас: </label>
+                            <input type="text" class="form-control" id="exchange_balance" name="rate" disabled>
                         </div>
 
                         <div class="form-group">
                             <label for="received_currency">Какой кошель пополняем, Господин ?</label>
                             <select class="form-control" id="received_currency" name="received_cur">
-                                <option>Американцев поддерживаю (доллары)</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="received_currency">Курсик выбранной вами валюты: </label>
-                            <input type="text" class="form-control" name="rate" value="65" disabled>
+                            <input type="text" class="form-control" id="rate" name="rate" disabled>
                         </div>
 
                         <div class="form-group">
-                            <label for="amount">Сколько башляем ?</label>
-                            <input type="text" class="form-control" name="amount">
+                            <label for="amount" id="amount_label">Какое количество новой валюты вы хотите приобрести ? </label>
+                            <input type="text" id="amount_to_exchange" class="form-control" name="amount">
                         </div>
 
                         <div class="form-group">
-                            <label for="amount">В новой валюте это ... </label>
-                            <input type="text" class="form-control">
+                            <label for="amount">Обмен будет стоить:</label>
+                            <input type="text" class="form-control" id="amount">
                         </div>
 
                         <input type="submit">

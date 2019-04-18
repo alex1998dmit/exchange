@@ -7,4 +7,3 @@
 
 require('./bootstrap');
 require('./exchange');
-require('./stat');

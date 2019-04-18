@@ -36835,8 +36835,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./exchange */ "./resources/js/exchange.js");
 
-__webpack_require__(/*! ./stat */ "./resources/js/stat.js");
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -36911,6 +36909,7 @@ $(document).ready(function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
   var exchanged_balances_list = $('#exchanged_currency');
   var received_balances_list = $('#received_currency');
@@ -36922,24 +36921,8 @@ $(document).ready(function () {
   var prepare_form = function prepare_form() {
     var form_name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'form';
     var data = arguments.length > 1 ? arguments[1] : undefined;
-    var url = "/api/user";
-    $.ajax({
-      url: url,
-      type: 'GET',
-      data: {
-        'token': CSRF_TOKEN
-      },
-      dataType: 'json'
-    }).done(function (_ref) {
-      var data = _ref.data;
-      console.log(data); // data.forEach((elem) => {
-      //   const exchangeBlock = `
-      //   `;
-      // //   exchangesBlock.append(exchangeBlock);
-      // })
-    }); // $('#exchanged_currency')
-    // .append(`<option value="foo">foo</option>`)
-    // .append(`<option value="bar">bar</option>`)
+    var options_data = 12;
+    $('#exchanged_currency').append("<option value=\"foo\">foo</option>").append("<option value=\"bar\">bar</option>");
   };
 
   $(document).on("change", '#exchanged_currency', function (e) {
@@ -36962,41 +36945,6 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./resources/js/stat.js":
-/*!******************************!*\
-  !*** ./resources/js/stat.js ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-$(document).ready(function () {
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-  var url = "/api/user/stats";
-  $.ajax({
-    url: url,
-    type: 'GET',
-    data: {
-      'token': CSRF_TOKEN
-    },
-    dataType: 'json'
-  }).done(function (_ref) {
-    var data = _ref.data;
-    console.log(data);
-    var exchangesBlock = $('#exchanges-block');
-    data.forEach(function (elem) {
-      var exchangeBlock = "\n        <div class=\"card\">\n          <div class=\"card-body\">\n            <p>Exchanged currency: ".concat(elem.exchanged_currency, "</p>\n            <p>Amount: ").concat(elem.amount, "</p>\n            <p>Received currency: ").concat(elem.received_currency, "</p>\n            <p>Rate: ").concat(elem.rate, "</p>\n            <p>Date: ").concat(elem.date, "</p>\n          </div>\n        </div>\n      ");
-      exchangesBlock.append(exchangeBlock);
-    });
-  });
-});
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -37015,8 +36963,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -7,20 +7,17 @@ const getDifferenceBetweenRates = (newRate, oldRate) =>
 const showExchanges = (exchanges, currentRates) => {
   const blockWithAllExchanges = $('#exchanges-block');
 
-  exchanges.forEach((exchange) => {
+  exchanges.forEach((exchange, index) => {
     const currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
 
     const blockOfExchange = `
-      <div class="card">
-        <div class="card-body">
-          <p>Exchanged currency: ${ exchange.exchanged_currency }</p>
-          <p>Amount: ${ exchange.amount }</p>
-          <p>Received currency: ${ exchange.received_currency }</p>
-          <p>Rate: ${ exchange.rate }</p>
-          <p>Date: ${ exchange.date }</p>
-          <p>Difference: ${ getDifferenceBetweenRates(currentRate, exchange.rate) }%</p>
-        </div>
-      </div>
+      <tr>
+        <th scope="row">${ index + 1 }</th>
+        <td>${ exchange.exchanged_currency }</td>
+        <td>${ exchange.received_currency }</td>
+        <td>${ exchange.rate }</td>
+        <td>${ getDifferenceBetweenRates(currentRate, exchange.rate) }%</td>
+      </tr>
     `;
     blockWithAllExchanges.append(blockOfExchange);
   });
@@ -43,7 +40,6 @@ $(document).ready(() => {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
     }
   });
-
   const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   const exchangeUrl = `/api/user/stats`;
   const rateUrl = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js'

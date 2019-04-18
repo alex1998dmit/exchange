@@ -16,7 +16,7 @@ class ExchangesCollection extends ResourceCollection
     public function toArray($request)
     {
         $exchanges = $this->collection;
-
+        $response = [];
         foreach($exchanges as $exchange) {
 
             $exchange_balance_id = $exchange->exchanged_currency;

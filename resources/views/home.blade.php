@@ -58,12 +58,5 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-<script>
-    // console.log(jQuery(document));
-    // const $ = require('jquery');
-</script>
-=======
->>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 @endsection
 

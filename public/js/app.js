@@ -36904,28 +36904,13 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-<<<<<<< HEAD
-=======
-
-
-/***/ }),
-
-/***/ "./resources/js/stat.js":
-/*!******************************!*\
-  !*** ./resources/js/stat.js ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
->>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 $(document).ready(function () {
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-<<<<<<< HEAD
   var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
   var exchanged_balances_list = $('#exchanged_currency');
   var received_balances_list = $('#received_currency');
@@ -36937,21 +36922,24 @@ $(document).ready(function () {
   var prepare_form = function prepare_form() {
     var form_name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'form';
     var data = arguments.length > 1 ? arguments[1] : undefined;
-    var options_data = 12;
-    $('#exchanged_currency').append("<option value=\"foo\">foo</option>").append("<option value=\"bar\">bar</option>"); // $(form_name).prepend('');
+    var url = "/api/user/stats"; // $.ajax({
+    //     url,
+    //     type: 'GET',
+    //     data: { 'token': CSRF_TOKEN },
+    //     dataType: 'json',
+    //   }).done(({ data }) => {
+    //     console.log(data);
+    //     data.forEach((elem) => {
+    //       const exchangeBlock = `
+    //       `;
+    //     //   exchangesBlock.append(exchangeBlock);
+    //     })
+    //   });
+    // $('#exchanged_currency')
+    // .append(`<option value="foo">foo</option>`)
+    // .append(`<option value="bar">bar</option>`)
   };
 
-  $.ajax({
-    type: 'GET',
-    url: 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js',
-    success: function success(data) {
-      var rates_json = JSON.parse(data);
-      var date_refresh = rates_json.Date;
-      var rates = rates_json.Valute;
-      var exchange_currency = $('#exchange_balance').attr('id');
-      show_exchange_balance('#exchange_balance');
-    }
-  });
   $(document).on("change", '#exchanged_currency', function (e) {
     console.log('changed option'); // Исправить запрос на запрос без проксирования, решить проблему с корс
 
@@ -36968,7 +36956,24 @@ $(document).ready(function () {
     });
   });
   prepare_form();
-=======
+});
+
+/***/ }),
+
+/***/ "./resources/js/stat.js":
+/*!******************************!*\
+  !*** ./resources/js/stat.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var url = "/api/user/stats";
   $.ajax({
     url: url,
@@ -36986,25 +36991,10 @@ $(document).ready(function () {
       exchangesBlock.append(exchangeBlock);
     });
   });
->>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 });
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./resources/js/stat.js":
-/*!******************************!*\
-  !*** ./resources/js/stat.js ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-console.log('test');
-
-/***/ }),
-
-=======
->>>>>>> 7d6fd6e2b61fa71a576ec22bf1e04ae28bff4843
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!

@@ -60,11 +60,11 @@ Route::post('/exchange', function(Request $request) {
         $exchange = Exchange::create([
             'exchanged_currency' => $exchanged_id,
             'received_currency' => $received_id,
-            'amount' => $amount, 
+            'amount' => $amount,
             'date' => Carbon::now(),
             'rate' => $rate,
-        ]);     
-        
+        ]);
+
         $exchanged_balance->amount = $exchanged_balance->amount - $amount * $rate;
         $received_balance->amount = $received_balance->amount + $amount;
 
@@ -87,6 +87,7 @@ Route::get('/user/stats', function(Request $request) {
     }
 
     $exchanges = Exchange::whereDate('date', Carbon::today())->whereIn('exchanged_currency', $balances_id)->get();
+    dd($exchanges);
     return new ExchangesCollection($exchanges);
 });
 

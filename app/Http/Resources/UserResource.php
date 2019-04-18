@@ -17,7 +17,7 @@ class UserResource extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {        
+    {
         foreach($this->balance as $bal){
             $response[] = [
                 'balance_id' => $bal->id,

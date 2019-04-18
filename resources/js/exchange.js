@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { updateRate } from './utilities';
 
 $(document).ready(function() {
 
@@ -10,7 +11,7 @@ $(document).ready(function() {
         }
     });
 
-    let currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
+    let currencies_url = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
 
     // state
     let exchange_currency_id;
@@ -21,20 +22,16 @@ $(document).ready(function() {
     let amount_warning_sign = false;
 
     const buildReceivedBalancesMenu = () => {
-        $.ajax({
-            type:'GET',
-            url: `https://cors-anywhere.herokuapp.com/${currencies_url}`,
-            success: function(data){
-                let rates_json = JSON.parse(data);
-                let date_refresh = rates_json.Date
-                let rates = rates_json.Valute;
-                received_currency_id = $('#received_currency').children(":selected").attr("id");
-                const received_currency_name =$('#received_currency').children(":selected").data("name");
-                const rate_full_value = rates[received_currency_name].Value;
-                rate =  Math.floor(rate_full_value * 100) / 100;
-                $(`#rate`).val(rate);
-            }
-        });
+        updateRate(currencies_url).then((data) => {
+            let rates_json = JSON.parse(data);
+            let date_refresh = rates_json.Date
+            let rates = rates_json.Valute;
+            received_currency_id = $('#received_currency').children(":selected").attr("id");
+            const received_currency_name =$('#received_currency').children(":selected").data("name");
+            const rate_full_value = rates[received_currency_name].Value;
+            rate =  Math.floor(rate_full_value * 100) / 100;
+            $(`#rate`).val(rate);
+        })
     }
 
 

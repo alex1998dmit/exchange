@@ -13,17 +13,29 @@ $(document).ready(function() {
     let exchanged_balances_list = $('#exchanged_currency');
     let received_balances_list = $('#received_currency');
 
+    // let rate_list = {
+    //     "USD": {
+    //         "rate": 65,
+    //     },
+    //     "EUR": {
+    //         "rate": 100,
+    //     },
+    //     "GBP":{
+    //         "rate"
+    //     },
+    // };
+
     $(document).on("change", '#exchanged_currency', function(e){
         console.log('changed option');
+        // Исправить запрос на запрос без проксирования, решить проблему с корс
         $.ajax({
-            url: 'https://www.cbr-xml-daily.ru/daily_json.js',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-            },
-        });
-
+            type:'GET',
+            url: 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js',
+            success: function(data){
+                let rates_json = data['Valute'];
+                console.log(typeof rates_json);
+            }
+          });
     });
 
 });

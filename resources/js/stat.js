@@ -1,11 +1,5 @@
 import $ from 'jquery';
-
-const updateRate = async (url) => {
-  return await $.ajax({
-    type: 'GET',
-    url,
-  });
-};
+import { updateRate } from './utilities';
 
 const getDifferenceBetweenRates = (newRate, oldRate) =>
   Math.round((newRate - oldRate) * 100) / 100;

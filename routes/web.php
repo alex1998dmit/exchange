@@ -22,15 +22,13 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/exchange', 'ExchangesController@index')->name('exchange');
     Route::get('/user', 'UsersController@index')->name('user');
 
-
     Route::get('/test/{id}', function($id) {
         $user = User::find($id);
         // dd($user->balance());
         $balance = Balance::find(1);
         // $currencey = Currency::find(1);
         print_r($balance->currency->name);
-        // $balance->currency->
-        
+        // $balance->currency->        
     });
 
 

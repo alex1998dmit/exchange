@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Девки тачками, деньги пачками</div>
+                <div class="card-header">Обмен валют</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,10 +14,12 @@
                         </div>
                     @endif
                     <form action="{{ route('exchange.post') }}" method="POST">
+                        {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="exchanged_currency">Откуда списываем ваши денюжки ?</label>
+                            <label for="exchanged_currency">Выберите счет для списания</label>
                             <select class="form-control" id="exchanged_currency" name="exchanged_cur">
                                 <option> Православный счет(Рубль   500)</option>
+                                <option>Второй секретный счет</option>
                             </select>
                         </div>
 
@@ -57,7 +59,7 @@
     </div>
 </div>
 <script>
-    console.log(jQuery(document));
+    // console.log(jQuery(document));
     // const $ = require('jquery');
 </script>
 @endsection

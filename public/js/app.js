@@ -36833,6 +36833,10 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./exchange */ "./resources/js/exchange.js");
+
+__webpack_require__(/*! ./stat */ "./resources/js/stat.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -36893,6 +36897,52 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/exchange.js":
+/*!**********************************!*\
+  !*** ./resources/js/exchange.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  var currencies_url = 'https://www.cbr-xml-daily.ru/daily_json.js';
+  var exchanged_balances_list = $('#exchanged_currency');
+  var received_balances_list = $('#received_currency');
+  $(document).on("change", '#exchanged_currency', function (e) {
+    console.log('changed option');
+    $.ajax({
+      url: 'https://www.cbr-xml-daily.ru/daily_json.js',
+      type: 'GET',
+      data: {
+        '_token': CSRF_TOKEN
+      },
+      dataType: 'json',
+      success: function success(data) {
+        console.log(data);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/stat.js":
+/*!******************************!*\
+  !*** ./resources/js/stat.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+console.log('test');
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -36911,8 +36961,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

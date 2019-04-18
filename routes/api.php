@@ -76,7 +76,6 @@ Route::post('/exchange', function(Request $request) {
 
 Route::get('/user/stats', function(Request $request) {
     // Переделать в будущем, продумать лучшую структуру для хранения информации о пользователи в транзакциях ??
-    $period = $request['period'];
     $user_id = 1;
 
     // Можно заменить добавив в сущность транзакций пользователя ???

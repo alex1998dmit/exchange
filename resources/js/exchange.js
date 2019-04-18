@@ -18,16 +18,6 @@ $(document).ready(function() {
     let amount;
     let amount_warning_sign = false;
 
-    let show_exchange_balance = (input, value) => {
-        $(input).val(value);
-
-    }
-
-    const generateBalances = (balances) => {
-        const exchange_input = $('#exchanged_currency');
-        const exchange_balance = balances.filter(el => el.name === 'RUB');
-    }
-
     const buildReceivedBalancesMenu = () => {
         $.ajax({
             type:'GET',
@@ -95,8 +85,6 @@ $(document).ready(function() {
         }
         $(`#amount`).val(amount_received);
     });
-
-
 
     prepare_form();
 });

@@ -28,7 +28,16 @@ Route::middleware(['auth'])->group(function() {
         $balance = Balance::find(1);
         // $currencey = Currency::find(1);
         print_r($balance->currency->name);
-        // $balance->currency->        
+        // $balance->currency->
+    });
+
+    Route::get('api/user', function(Request $request) {
+        // $userId = Auth::id();
+        $userId = Auth::user()->id;
+        // $id  = Auth::user()->id;
+        $user = User::find($userId);
+        return json_encode(['user_id' => 'dsadsfas']);
+        // return new UserResource($user);
     });
 
 

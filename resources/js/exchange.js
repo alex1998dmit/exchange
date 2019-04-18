@@ -20,22 +20,22 @@ $(document).ready(function() {
     }
 
     let prepare_form = (form_name = 'form', data) => {
-        const url = `/api/user/stats`;
-        // $.ajax({
-        //     url,
-        //     type: 'GET',
-        //     data: { 'token': CSRF_TOKEN },
-        //     dataType: 'json',
-        //   }).done(({ data }) => {
-        //     console.log(data);
+        const url = `/api/user`;
+        $.ajax({
+            url,
+            type: 'GET',
+            data: { 'token': CSRF_TOKEN },
+            dataType: 'json',
+          }).done(({ data }) => {
+            console.log(data);
 
-        //     data.forEach((elem) => {
-        //       const exchangeBlock = `
+            // data.forEach((elem) => {
+            //   const exchangeBlock = `
 
-        //       `;
-        //     //   exchangesBlock.append(exchangeBlock);
-        //     })
-        //   });
+            //   `;
+            // //   exchangesBlock.append(exchangeBlock);
+            // })
+          });
 
         // $('#exchanged_currency')
         // .append(`<option value="foo">foo</option>`)
@@ -60,9 +60,6 @@ $(document).ready(function() {
             }
         });
     });
-
     prepare_form();
-
-
 });
 

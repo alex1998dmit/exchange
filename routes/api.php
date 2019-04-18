@@ -35,11 +35,24 @@ Route::post('/test', function(Request $request) {
     return json_encode(['name' => $name, 'surname' => $surname]);
 });
 
-Route::get('/user', function(Request $request) {
-    $id  = $request['id'];
-    $user = User::find($id);
-    return new UserResource($user);
+
+// Route::middleware('auth:api')->get('/user', function(Request $request) {
+//         // $userId = Auth::id();
+//         $userId = $request->user()->id;
+//         // $id  = Auth::user()->id;
+//         $user = User::find($userId);
+//         // return $userId;
+//         return json_encode(['user_id' => 'dsada']);
+//         // return new UserResource($user);
+//     });
+
+// });
+Route::group(['middleware' => 'auth'], function () {
+    // your routes
+
 });
+
+
 
 Route::post('/exchange', function(Request $request) {
     $exchanged_id = $request['exchanged_cur'];
@@ -87,7 +100,6 @@ Route::get('/user/stats', function(Request $request) {
     }
 
     $exchanges = Exchange::whereDate('date', Carbon::today())->whereIn('exchanged_currency', $balances_id)->get();
-    dd($exchanges);
     return new ExchangesCollection($exchanges);
 });
 

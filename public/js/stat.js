@@ -11539,7 +11539,7 @@ jquery__WEBPACK_IMPORTED_MODULE_1___default()(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/stat.js */"./resources/js/stat.js");
+module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/stat.js */"./resources/js/stat.js");
 
 
 /***/ })

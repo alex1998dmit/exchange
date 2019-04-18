@@ -4,6 +4,9 @@ import { updateRate } from './utilities';
 const getDifferenceBetweenRates = (newRate, oldRate) =>
   Math.round((newRate - oldRate) * 100) / 100;
 
+const getReceivedAmount = (amount, rate) =>
+  Math.round(amount / rate / 100 * 100);
+
 const showExchanges = (exchanges, currentRates) => {
   const blockWithAllExchanges = $('#exchanges-block');
 
@@ -13,8 +16,8 @@ const showExchanges = (exchanges, currentRates) => {
     const blockOfExchange = `
       <tr>
         <th scope="row">${ index + 1 }</th>
-        <td>${ exchange.exchanged_currency }</td>
-        <td>${ exchange.received_currency }</td>
+        <td>${ exchange.amount } ${ exchange.exchanged_currency }</td>
+        <td>${ getReceivedAmount(exchange.amount, exchange.rate) } ${ exchange.received_currency }</td>
         <td>${ exchange.rate }</td>
         <td>${ getDifferenceBetweenRates(currentRate, exchange.rate) }%</td>
       </tr>

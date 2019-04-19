@@ -16,7 +16,7 @@ class BalancesTableSeeder extends Seeder
     {
         //
         $currencies = Currency::all();
-        $user = User::where('name', '=', 'admin')->first();
+        $user = User::first();
         $user_id = $user->id;
         foreach($currencies as $currency) {
             Balance::create([

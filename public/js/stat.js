@@ -11454,11 +11454,15 @@ var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldR
   return Math.round((newRate - oldRate) * 100) / 100;
 };
 
+var getReceivedAmount = function getReceivedAmount(amount, rate) {
+  return Math.round(amount / rate / 100 * 100);
+};
+
 var showExchanges = function showExchanges(exchanges, currentRates) {
   var blockWithAllExchanges = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#exchanges-block');
-  exchanges.forEach(function (exchange) {
+  exchanges.forEach(function (exchange, index) {
     var currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
-    var blockOfExchange = "\n      <div class=\"card\">\n        <div class=\"card-body\">\n          <p>Exchanged currency: ".concat(exchange.exchanged_currency, "</p>\n          <p>Amount: ").concat(exchange.amount, "</p>\n          <p>Received currency: ").concat(exchange.received_currency, "</p>\n          <p>Rate: ").concat(exchange.rate, "</p>\n          <p>Date: ").concat(exchange.date, "</p>\n          <p>Difference: ").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</p>\n        </div>\n      </div>\n    ");
+    var blockOfExchange = "\n      <tr>\n        <th scope=\"row\">".concat(index + 1, "</th>\n        <td>").concat(exchange.amount, " ").concat(exchange.exchanged_currency, "</td>\n        <td>").concat(getReceivedAmount(exchange.amount, exchange.rate), " ").concat(exchange.received_currency, "</td>\n        <td>").concat(exchange.rate, "</td>\n        <td>").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</td>\n      </tr>\n    ");
     blockWithAllExchanges.append(blockOfExchange);
   });
 };

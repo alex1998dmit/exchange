@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function() {
             $exchanged_balance->save();
             $received_balance->save();
         }
-        
+
         return new UserResource($user);
     });
 
@@ -75,7 +75,7 @@ Route::middleware(['auth'])->group(function() {
         $user_id = Auth::user()->id;
 
         // Можно заменить добавив в сущность транзакций пользователя ???
-        $balances = Balance::where('user_id', '=', 1)->get();
+        $balances = Balance::where('user_id', '=', $user_id)->get();
         $balances_id = [];
 
         foreach($balances as $balance) {

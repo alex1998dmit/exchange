@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { updateRate } from './utilities';
 
-
+$(document).ready(function() {
 
     let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -115,8 +115,6 @@ import { updateRate } from './utilities';
             },
         });
     });
-
-$(document).ready(function() {
 
     prepare_form();
 

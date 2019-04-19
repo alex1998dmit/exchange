@@ -26,13 +26,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="received_currency">Какой кошель пополняем, Господин ?</label>
+                            <label for="received_currency">Выберите покупаемую валюту</label>
                             <select class="form-control" id="received_currency" name="received_cur">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="received_currency">Курсик выбранной вами валюты: </label>
+                            <label for="received_currency">Курс обмениваемой валюты: </label>
                             <input type="text" class="form-control" id="rate" name="rate" disabled>
                         </div>
 

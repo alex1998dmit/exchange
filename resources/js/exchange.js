@@ -1,122 +1,113 @@
 import $ from 'jquery';
-import { updateRate } from './utilities';
+import { updateRate, roundToTwoDecimal } from './utilities';
 
-$(document).ready(function() {
+const setupForm = (url, token) =>
+  $.ajax({
+    url,
+    type: 'GET',
+    data: { token },
+    dataType: 'json',
+  });
 
-    let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+const getRate = () => {
+  const urlCurrencies = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        }
-    });
+  return updateRate(urlCurrencies).then((data) => {
+    const currentRates = JSON.parse(data).Valute;
+    const receivedCurrencyName = $('#received_currency').children(":selected").data("name");
+    const currentRate = currentRates[receivedCurrencyName].Value;
+    return Math.round(currentRate * 100) / 100;
+  });
+};
 
-    let currencies_url = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
+const showReceivedCurrencies = (balances) => {
+  const exchangeBalanceName = getExchangeBalance(balances).name;
 
-    // state
-    let exchange_currency_id;
-    let exchanged_balance_amount;
-    let received_currency_id;
-    let rate;
-    let amount;
-    let amount_warning_sign = false;
+  balances
+    .filter(el => el.name !== exchangeBalanceName)
+    .forEach(el => $(`#received_currency`).append(`
+      <option id=${ el.balance_id } data-name=${ el.name }>
+          ${ el.name } ${ el.amount }
+      </option>
+    `))
+};
 
-    const buildReceivedBalancesMenu = () => {
-        updateRate(currencies_url).then((data) => {
-            let rates_json = JSON.parse(data);
-            let date_refresh = rates_json.Date
-            let rates = rates_json.Valute;
-            received_currency_id = $('#received_currency').children(":selected").attr("id");
-            const received_currency_name =$('#received_currency').children(":selected").data("name");
-            const rate_full_value = rates[received_currency_name].Value;
-            rate =  Math.round(rate_full_value * 100) / 100;
-            $(`#rate`).val(rate);
-        })
+const getExchangeBalance = (balances) =>
+  balances.find(el => el.name === 'RUB');
+
+const showExchangeBalance = (balances) => {
+  const exchangeBalance = getExchangeBalance(balances);
+  $('#exchange_balance').val(exchangeBalance.amount);
+  $('#exchange_currency').val(exchangeBalance.name);
+};
+
+$(document).ready(() => {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
     }
+  });
 
+  const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  const url = `/api/user`;
 
-    const prepare_form = () => {
+  setupForm(url, CSRF_TOKEN).then(({ data }) => {
+    showExchangeBalance(data.balances);
+    showReceivedCurrencies(data.balances);
+    
+    getRate().then((rate) => {
+      const exchangeBalance = getExchangeBalance(data.balances);
+      
+      $('#rate').val(rate);
+      
+      $(document).on('keyup', '#amount_to_exchange', function (e) {
+        const exchangeBalanceAmount = exchangeBalance.amount;
+        const exchangingAmount = $(this).val();
+        
+        const maxPossibleAmount = roundToTwoDecimal(exchangeBalanceAmount / rate);
+        const receivingAmount = roundToTwoDecimal(exchangingAmount / rate);
+        
+        let amount_warning_sign = false;
 
-        const url = `/api/user`;
-
-        $.ajax({
-            url,
-            type: 'GET',
-            data: { 'token': CSRF_TOKEN },
-            dataType: 'json',
-          }).done((json_response)=> {
-                buildReceivedBalancesMenu();
-                const balances = json_response.data.balances;
-                // Отрефакторить чтобы был не массив, добавить в отдельную функцию
-                const exchange_balance_json = balances.filter(el => el.name === 'RUB');
-                exchanged_balance_amount = exchange_balance_json[0].amount;
-                const exchange_balance_name = exchange_balance_json[0].name;
-                exchange_currency_id = exchange_balance_json[0].balance_id;
-                $('#exchange_balance').val(exchanged_balance_amount);
-                $('#exchange_currency').val(exchange_balance_name);
-
-                const received_balances = balances.filter(el => el.name !== 'RUB');
-                received_balances.forEach(el => $(`#received_currency`).append(`<option id=${el.balance_id} data-name=${el.name}>${el.name}  ${el.amount}</option>`));
-            });
-
-    }
-
-    $(document).on("change", '#received_currency', function(e){
-        // Исправить запрос на запрос без проксирования, решить проблему с корс
-        buildReceivedBalancesMenu();
-    });
-
-    $(document).on("keyup", '#amount_to_exchange', function(e) {
-        amount = $(this).val();
-        const max_amount_received = Math.round(exchanged_balance_amount/rate * 100) / 100;
-        let amount_received =  Math.round(amount*rate * 100) / 100;
-        if(exchanged_balance_amount < rate * amount) {
-            if(!amount_warning_sign) {
-                $('#amount_label').append(`<h5 id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${max_amount_received} </h5>`);
-                amount_warning_sign = true;
-            }
-            amount_received = max_amount_received;
-            $('#amount_to_exchange').val(amount_received);
+        if (exchangeBalanceAmount < exchangingAmount * rate) {
+          if (!amount_warning_sign) {
+            $('#amount_label').append(`<h5 id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${maxPossibleAmount} </h5>`);
+            amount_warning_sign = true;
+          }
+          $('#amount_to_exchange').val(maxPossibleAmount);
         } else {
-            $('#amount_warning_sign').remove();
-            amount_warning_sign = false;
+          $('#amount_warning_sign').remove();
+          amount_warning_sign = false;
         }
-        $(`#amount`).val(amount_received);
-    });
-
-    $('#exchange_button').click((e) => {
-
+        $(`#amount`).val(receivingAmount);
+      });
+      
+      $('#exchange_button').on('click', (e) => {
         e.preventDefault();
-        let url = 'api/exchange';
-
-        if (!confirm('Совершить транзацию ?')) {
-            return false;
+        
+        if (!confirm('Make a transaction?')) {
+          return false;
         }
-
+      
+        const url = 'api/exchange';
+        const exchangeCurrencyId = exchangeBalance.id;
+        const receivedCurrencyId = $('#received_currency').children(":selected").attr("id");
+        const amount = $('#amount_to_exchange').val();
+      
         $.ajax({
-            url,
-            type: 'POST',
-            data: { exchanged_cur:  exchange_currency_id, received_cur: received_currency_id, amount: amount, rate: rate, _token: CSRF_TOKEN },
-            dataType: 'json',
-            beforeSend: function(){
-                $('#exchange_button').hide();
-            },
-            complete: function(){
-                $('#exchange_button').show();
-            },
-            success: function(json_response) {
-                const balances = json_response.data.balances;
-                // Отрефакторить чтобы был не массив, добавить в отдельную функцию
-                const exchange_balance_json = balances.filter(el => el.name === 'RUB');
-                exchanged_balance_amount = exchange_balance_json[0].amount;
-                const exchange_balance_name = exchange_balance_json[0].name;
-                exchange_currency_id = exchange_balance_json[0].balance_id;
-                $('#exchange_balance').val(exchanged_balance_amount);
-                $('#exchange_currency').val(exchange_balance_name);
-            },
-        });
+          url,
+          type: 'POST',
+          data: {
+            exchanged_cur: exchangeCurrencyId,
+            received_cur: receivedCurrencyId,
+            amount,
+            rate,
+            _token: CSRF_TOKEN },
+          dataType: 'json',
+          beforeSend: () => $('#exchange_button').hide(),
+          complete: () => $('#exchange_button').show(),
+        }).done(({ data }) => showExchangeBalance(data.balances));
+      });
     });
-
-    prepare_form();
-
+    });
 });

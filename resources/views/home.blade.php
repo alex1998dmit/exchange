@@ -43,7 +43,7 @@
 
                         <div class="form-group">
                             <label for="amount">Обмен будет стоить:</label>
-                            <input type="text" class="form-control" id="amount">
+                            <input type="text" class="form-control" id="amount" disabled>
                         </div>
 
                         <button type="submit" id="exchange_button" class="btn btn-primary">Транзакция</button>

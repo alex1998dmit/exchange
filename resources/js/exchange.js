@@ -9,6 +9,8 @@ const setupForm = (url, token) =>
     dataType: 'json',
   });
 
+let amount_warning_sign = false;
+
 const getRate = () => {
   const urlCurrencies = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
 
@@ -54,28 +56,30 @@ $(document).ready(() => {
   setupForm(url, CSRF_TOKEN).then(({ data }) => {
     showExchangeBalance(data.balances);
     showReceivedCurrencies(data.balances);
-    
+
     getRate().then((rate) => {
       const exchangeBalance = getExchangeBalance(data.balances);
-      
+
       $('#rate').val(rate);
-      
+
       $(document).on('keyup', '#amount_to_exchange', function (e) {
         const exchangeBalanceAmount = exchangeBalance.amount;
-        const exchangingAmount = $(this).val();
-        
-        const maxPossibleAmount = roundToTwoDecimal(exchangeBalanceAmount / rate);
-        const receivingAmount = roundToTwoDecimal(exchangingAmount / rate);
-        
-        let amount_warning_sign = false;
+        const exchangingAmount = roundToTwoDecimal($(this).val());
 
+        const maxPossibleAmount = roundToTwoDecimal(exchangeBalanceAmount / rate);
+        let receivingAmount = roundToTwoDecimal(exchangingAmount * rate);
+
+        $(this).val(exchangingAmount);
         if (exchangeBalanceAmount < exchangingAmount * rate) {
+            console.log('more');
+            console.log(amount_warning_sign);
           if (!amount_warning_sign) {
             $('#amount_label').append(`<span id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${maxPossibleAmount} </span>`);
             $('#amount_to_exchange').addClass('border-danger');
             amount_warning_sign = true;
           }
           $('#amount_to_exchange').val(maxPossibleAmount);
+          receivingAmount = exchangeBalanceAmount;
         } else {
           $('#amount_to_exchange').removeClass('border-danger');
           $('#amount_warning_sign').remove();
@@ -83,19 +87,19 @@ $(document).ready(() => {
         }
         $(`#amount`).val(receivingAmount);
       });
-      
+
       $('#exchange_button').on('click', (e) => {
         e.preventDefault();
-        
+
         if (!confirm('Make a transaction?')) {
           return false;
         }
-      
+
         const url = 'api/exchange';
         const exchangeCurrencyId = exchangeBalance.balance_id;
         const receivedCurrencyId = $('#received_currency').children(":selected").attr("id");
         const amount = $('#amount_to_exchange').val();
-      
+
         $.ajax({
           url,
           type: 'POST',

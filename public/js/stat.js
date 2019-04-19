@@ -11451,11 +11451,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldRate) {
-  return Math.round((newRate - oldRate) * 100) / 100;
+  return Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["roundToTwoDecimal"])(newRate - oldRate);
 };
 
 var getReceivedAmount = function getReceivedAmount(amount, rate) {
-  return Math.round(amount * rate / 100 * 100);
+  return Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["roundToTwoDecimal"])(amount * rate);
 };
 
 var showExchanges = function showExchanges(exchanges, currentRates) {
@@ -11502,12 +11502,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
 /*!***********************************!*\
   !*** ./resources/js/utilities.js ***!
   \***********************************/
-/*! exports provided: updateRate */
+/*! exports provided: updateRate, roundToTwoDecimal */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRate", function() { return updateRate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "roundToTwoDecimal", function() { return roundToTwoDecimal; });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -11547,6 +11548,9 @@ function () {
     return _ref.apply(this, arguments);
   };
 }();
+var roundToTwoDecimal = function roundToTwoDecimal(number) {
+  return Math.round(number * 100) / 100;
+};
 
 /***/ }),
 
@@ -11557,7 +11561,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/stat.js */"./resources/js/stat.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/stat.js */"./resources/js/stat.js");
 
 
 /***/ })

@@ -74,8 +74,9 @@ $(document).ready(function() {
             if(!amount_warning_sign) {
                 $('#amount_label').append(`<h5 id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${max_amount_received} </h5>`);
                 amount_warning_sign = true;
-                amount_received = max_amount_received;
             }
+            amount_received = max_amount_received;
+            $('#amount_to_exchange').val(amount_received);
         } else {
             $('#amount_warning_sign').remove();
             amount_warning_sign = false;

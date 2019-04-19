@@ -2,8 +2,24 @@
 
 @section('content')
 <div class="container">
+    <h2 class="mt-3">Your balances:</h2>
     <div class="card shadow">
-            <table class="table table-hover">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="width: 10%">#</th>
+                    <th scope="col" style="width: 30%">Currency</th>
+                    <th scope="col" style="width: 30%">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="balances-block">
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="mt-5">Today's exchanges:</h2>
+    <div class="card shadow">
+        <table class="table table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" style="width: 10%">#</th>

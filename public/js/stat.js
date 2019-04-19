@@ -11454,7 +11454,7 @@ var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldR
   return Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["roundToTwoDecimal"])(newRate - oldRate);
 };
 
-var getReceivedAmount = function getReceivedAmount(amount, rate) {
+var getExchangedAmount = function getExchangedAmount(amount, rate) {
   return Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["roundToTwoDecimal"])(amount * rate);
 };
 
@@ -11462,7 +11462,7 @@ var showExchanges = function showExchanges(exchanges, currentRates) {
   var blockWithAllExchanges = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#exchanges-block');
   exchanges.forEach(function (exchange, index) {
     var currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
-    var blockOfExchange = "\n      <tr>\n        <th scope=\"row\">".concat(index + 1, "</th>\n        <td>").concat(exchange.amount, " ").concat(exchange.exchanged_currency, "</td>\n        <td>").concat(getReceivedAmount(exchange.amount, exchange.rate), " ").concat(exchange.received_currency, "</td>\n        <td>").concat(exchange.rate, "</td>\n        <td>").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</td>\n      </tr>\n    ");
+    var blockOfExchange = "\n      <tr>\n        <th scope=\"row\">".concat(index + 1, "</th>\n        <td>").concat(getExchangedAmount(exchange.amount, exchange.rate), " ").concat(exchange.exchanged_currency, "</td>\n        <td>").concat(exchange.amount, " ").concat(exchange.received_currency, "</td>\n        <td>").concat(exchange.rate, "</td>\n        <td>").concat(getDifferenceBetweenRates(currentRate, exchange.rate), "%</td>\n      </tr>\n    ");
     blockWithAllExchanges.append(blockOfExchange);
   });
 };
@@ -11481,6 +11481,24 @@ var showTodayExchanges = function showTodayExchanges(url, currentRates, token) {
   });
 };
 
+var showBalances = function showBalances(url, token) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    url: url,
+    type: 'GET',
+    data: {
+      token: token
+    },
+    dataType: 'json'
+  }).done(function (_ref2) {
+    var data = _ref2.data;
+    var blockWithAllBalances = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#balances-block');
+    data.balances.forEach(function (balance, index) {
+      var blockOfBalance = "\n        <tr>\n          <th scope=\"row\">".concat(index + 1, "</th>\n          <td>").concat(balance.name, "</td>\n          <td>").concat(balance.amount, "</td>\n        </tr>\n      ");
+      blockWithAllBalances.append(blockOfBalance);
+    });
+  });
+};
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajaxSetup({
     headers: {
@@ -11489,10 +11507,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
   });
   var CSRF_TOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content');
   var exchangeUrl = "/api/user/stats";
+  var balanceUrl = '/api/user';
   var rateUrl = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
   Object(_utilities__WEBPACK_IMPORTED_MODULE_1__["updateRate"])(rateUrl).then(function (data) {
     var currentRates = JSON.parse(data).Valute;
     showTodayExchanges(exchangeUrl, currentRates, CSRF_TOKEN);
+    showBalances(balanceUrl, CSRF_TOKEN);
   });
 });
 
@@ -11549,7 +11569,11 @@ function () {
   };
 }();
 var roundToTwoDecimal = function roundToTwoDecimal(number) {
+<<<<<<< HEAD
   return Math.round(number * 100) / 100;
+=======
+  return Math.floor(number * 100) / 100;
+>>>>>>> 3c618adc42c74cfdcd95b83255e225e7c4af9429
 };
 
 /***/ }),

@@ -4,7 +4,7 @@ import { updateRate, roundToTwoDecimal } from './utilities';
 const getDifferenceBetweenRates = (newRate, oldRate) =>
   roundToTwoDecimal(newRate - oldRate);
 
-const getReceivedAmount = (amount, rate) =>
+const getExchangedAmount = (amount, rate) =>
   roundToTwoDecimal(amount * rate);
 
 const showExchanges = (exchanges, currentRates) => {
@@ -15,8 +15,8 @@ const showExchanges = (exchanges, currentRates) => {
     const blockOfExchange = `
       <tr>
         <th scope="row">${ index + 1 }</th>
-        <td>${ exchange.amount } ${ exchange.exchanged_currency }</td>
-        <td>${ getReceivedAmount(exchange.amount, exchange.rate) } ${ exchange.received_currency }</td>
+        <td>${ getExchangedAmount(exchange.amount, exchange.rate) } ${ exchange.exchanged_currency }</td>
+        <td>${ exchange.amount } ${ exchange.received_currency }</td>
         <td>${ exchange.rate }</td>
         <td>${ getDifferenceBetweenRates(currentRate, exchange.rate) }%</td>
       </tr>

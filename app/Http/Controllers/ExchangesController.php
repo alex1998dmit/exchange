@@ -20,8 +20,6 @@ class ExchangesController extends Controller
         $rate = $request['rate'];
         $user_id =  Auth::user()->id;
 
-        dd($received_id);
-
         $exchanged_balance = Balance::find($exchanged_id);
         $received_balance = Balance::find($received_id);
         $user = User::find($user_id);
@@ -44,7 +42,6 @@ class ExchangesController extends Controller
             $exchanged_balance->save();
             $received_balance->save();
         }
-
         return new UserResource($user);
     }
 }

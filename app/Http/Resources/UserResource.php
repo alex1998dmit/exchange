@@ -18,6 +18,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $response = [];
         foreach($this->balance as $bal){
             $response[] = [
                 'balance_id' => $bal->id,

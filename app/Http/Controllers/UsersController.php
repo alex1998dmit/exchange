@@ -10,7 +10,6 @@ use Auth;
 class UsersController extends Controller
 {
     //
-
     public function apiUser(Request $request)
     {
         $userId = Auth::user()->id;

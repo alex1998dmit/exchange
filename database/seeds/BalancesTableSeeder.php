@@ -14,7 +14,6 @@ class BalancesTableSeeder extends Seeder
      */
     public function run()
     {
-        //
         $currencies = Currency::all();
         $user = User::first();
         $user_id = $user->id;

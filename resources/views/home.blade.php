@@ -37,7 +37,7 @@
 
                         <div class="form-group">
                             <label for="amount" id="amount_label">Amount of receiving currency</label>
-                            <input type="text" id="amount_to_exchange" class="form-control" name="amount">
+                            <input type="number" id="amount_to_exchange" class="form-control" name="amount">
                         </div>
 
                         <div class="form-group">

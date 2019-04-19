@@ -9,7 +9,13 @@ const setupForm = (url, token) =>
     dataType: 'json',
   });
 
-let amount_warning_sign = false;
+const validation = (exchangeBalance, rate) => {
+  const exchangeBalanceAmount = exchangeBalance.amount;
+  const exchangingAmount = roundToTwoDecimal($('#amount_to_exchange').val());
+  const receivingAmount = roundToTwoDecimal(exchangingAmount * rate);
+
+  return exchangeBalanceAmount >= receivingAmount;
+}
 
 const getRate = () => {
   const urlCurrencies = 'https://cors-anywhere.herokuapp.com/https://www.cbr-xml-daily.ru/daily_json.js';
@@ -62,43 +68,35 @@ $(document).ready(() => {
 
       $('#rate').val(rate);
 
-      $(document).on('keyup', '#amount_to_exchange', function (e) {
-        const exchangeBalanceAmount = exchangeBalance.amount;
-        const exchangingAmount = roundToTwoDecimal($(this).val());
+      $('#amount_to_exchange').on('change paste keyup', (e) => {
+        const exchangingAmount = roundToTwoDecimal($('#amount_to_exchange').val());
+        const receivingAmount = roundToTwoDecimal(exchangingAmount * rate);
 
-        const maxPossibleAmount = roundToTwoDecimal(exchangeBalanceAmount / rate);
-        let receivingAmount = roundToTwoDecimal(exchangingAmount * rate);
-
-        $(this).val(exchangingAmount);
-        if (exchangeBalanceAmount < exchangingAmount * rate) {
-            console.log('more');
-            console.log(amount_warning_sign);
-          if (!amount_warning_sign) {
-            $('#amount_label').append(`<span id="amount_warning_sign" style="color:red">Maximum amount to exchange: ${maxPossibleAmount} </span>`);
-            $('#amount_to_exchange').addClass('border-danger');
-            amount_warning_sign = true;
-          }
-          $('#amount_to_exchange').val(maxPossibleAmount);
-          receivingAmount = exchangeBalanceAmount;
+        if (!validation(exchangeBalance, rate)) {
+          $('#amount_to_exchange').addClass('border-danger');
         } else {
+          $(`#amount`).val(receivingAmount);
           $('#amount_to_exchange').removeClass('border-danger');
-          $('#amount_warning_sign').remove();
-          amount_warning_sign = false;
         }
-        $(`#amount`).val(receivingAmount);
       });
 
       $('#exchange_button').on('click', (e) => {
         e.preventDefault();
 
-        if (!confirm('Make a transaction?')) {
-          return false;
-        }
-
         const url = 'api/exchange';
         const exchangeCurrencyId = exchangeBalance.balance_id;
         const receivedCurrencyId = $('#received_currency').children(":selected").attr("id");
         const amount = $('#amount_to_exchange').val();
+        const maxPossibleAmount = roundToTwoDecimal(exchangeBalance.amount / rate);
+
+        if (!validation(exchangeBalance, rate)) {
+          alert(`Maximum amount to exchange: ${ maxPossibleAmount }`);
+          return false;
+        }
+
+        if (!confirm('Make a transaction?')) {
+          return false;
+        }
 
         $.ajax({
           url,
@@ -115,5 +113,5 @@ $(document).ready(() => {
         }).done(({ data }) => showExchangeBalance(data.balances));
       });
     });
-    });
+  });
 });

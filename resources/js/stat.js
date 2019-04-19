@@ -5,7 +5,7 @@ const getDifferenceBetweenRates = (newRate, oldRate) =>
   Math.round((newRate - oldRate) * 100) / 100;
 
 const getReceivedAmount = (amount, rate) =>
-  Math.round(amount / rate / 100 * 100);
+  Math.round(amount * rate / 100 * 100);
 
 const showExchanges = (exchanges, currentRates) => {
   const blockWithAllExchanges = $('#exchanges-block');

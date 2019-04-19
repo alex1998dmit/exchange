@@ -11455,7 +11455,7 @@ var getDifferenceBetweenRates = function getDifferenceBetweenRates(newRate, oldR
 };
 
 var getReceivedAmount = function getReceivedAmount(amount, rate) {
-  return Math.round(amount / rate / 100 * 100);
+  return Math.round(amount * rate / 100 * 100);
 };
 
 var showExchanges = function showExchanges(exchanges, currentRates) {
@@ -11557,7 +11557,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/exchange/resources/js/stat.js */"./resources/js/stat.js");
+module.exports = __webpack_require__(/*! /home/rukkiesman/Projects/exchanger/resources/js/stat.js */"./resources/js/stat.js");
 
 
 /***/ })

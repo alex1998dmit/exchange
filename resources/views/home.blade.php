@@ -10,7 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2>Currency exchange:</h2>
-            <div class="card" col-md-8>
+            <div class="card shadow" col-md-8>
                 <div class="card-body">
                     <form action="" method="POST">
                         {{ csrf_field() }}

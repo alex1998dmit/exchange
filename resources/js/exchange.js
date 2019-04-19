@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { updateRate } from './utilities';
 
-$(document).ready(function() {
+
 
     let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -39,16 +39,14 @@ $(document).ready(function() {
 
         const url = `/api/user`;
 
-        buildReceivedBalancesMenu();
-
         $.ajax({
             url,
             type: 'GET',
             data: { 'token': CSRF_TOKEN },
             dataType: 'json',
           }).done((json_response)=> {
+                buildReceivedBalancesMenu();
                 const balances = json_response.data.balances;
-
                 // Отрефакторить чтобы был не массив, добавить в отдельную функцию
                 const exchange_balance_json = balances.filter(el => el.name === 'RUB');
                 exchanged_balance_amount = exchange_balance_json[0].amount;
@@ -118,5 +116,8 @@ $(document).ready(function() {
         });
     });
 
+$(document).ready(function() {
+
     prepare_form();
+
 });

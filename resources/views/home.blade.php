@@ -46,7 +46,7 @@
                             <input type="text" class="form-control" id="amount">
                         </div>
 
-                        <button type="submit" id="exchange_button">Транзакция</button>
+                        <button type="submit" id="exchange_button" class="btn btn-primary">Транзакция</button>
                     </form>
                 </div>
             </div>

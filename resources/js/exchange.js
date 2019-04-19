@@ -71,11 +71,13 @@ $(document).ready(() => {
 
         if (exchangeBalanceAmount < exchangingAmount * rate) {
           if (!amount_warning_sign) {
-            $('#amount_label').append(`<h5 id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${maxPossibleAmount} </h5>`);
+            $('#amount_label').append(`<span id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${maxPossibleAmount} </span>`);
+            $('#amount_to_exchange').addClass('border-danger');
             amount_warning_sign = true;
           }
           $('#amount_to_exchange').val(maxPossibleAmount);
         } else {
+          $('#amount_to_exchange').removeClass('border-danger');
           $('#amount_warning_sign').remove();
           amount_warning_sign = false;
         }

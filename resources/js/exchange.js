@@ -86,9 +86,14 @@ $(document).ready(function() {
     });
 
     $('#exchange_button').click((e) => {
+
         e.preventDefault();
         console.log('button is submit');
         let url = 'api/exchange';
+
+        if (!confirm('Совершить транзацию ?')) {
+            return false;
+        }
 
         $.ajax({
             url,

@@ -29,7 +29,7 @@ $(document).ready(function() {
             received_currency_id = $('#received_currency').children(":selected").attr("id");
             const received_currency_name =$('#received_currency').children(":selected").data("name");
             const rate_full_value = rates[received_currency_name].Value;
-            rate =  Math.floor(rate_full_value * 100) / 100;
+            rate =  Math.round(rate_full_value * 100) / 100;
             $(`#rate`).val(rate);
         })
     }
@@ -70,8 +70,8 @@ $(document).ready(function() {
 
     $(document).on("keyup", '#amount_to_exchange', function(e) {
         amount = $(this).val();
-        const max_amount_received = Math.floor(exchanged_balance_amount/rate * 100) / 100;
-        let amount_received =  Math.floor(amount*rate * 100) / 100;
+        const max_amount_received = Math.round(exchanged_balance_amount/rate * 100) / 100;
+        let amount_received =  Math.round(amount*rate * 100) / 100;
         if(exchanged_balance_amount < rate * amount) {
             if(!amount_warning_sign) {
                 $('#amount_label').append(`<h5 id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${max_amount_received} </h5>`);
@@ -88,7 +88,6 @@ $(document).ready(function() {
     $('#exchange_button').click((e) => {
 
         e.preventDefault();
-        console.log('button is submit');
         let url = 'api/exchange';
 
         if (!confirm('Совершить транзацию ?')) {
@@ -100,6 +99,12 @@ $(document).ready(function() {
             type: 'POST',
             data: { exchanged_cur:  exchange_currency_id, received_cur: received_currency_id, amount: amount, rate: rate, _token: CSRF_TOKEN },
             dataType: 'json',
+            beforeSend: function(){
+                $('#exchange_button').hide();
+            },
+            complete: function(){
+                $('#exchange_button').show();
+            },
             success: function(json_response) {
                 const balances = json_response.data.balances;
                 // Отрефакторить чтобы был не массив, добавить в отдельную функцию

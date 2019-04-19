@@ -12,7 +12,6 @@ const showExchanges = (exchanges, currentRates) => {
 
   exchanges.forEach((exchange, index) => {
     const currentRate = (currentRates[exchange.exchanged_currency] || currentRates[exchange.received_currency]).Value;
-
     const blockOfExchange = `
       <tr>
         <th scope="row">${ index + 1 }</th>

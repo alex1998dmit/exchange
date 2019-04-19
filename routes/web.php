@@ -29,15 +29,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/exchange', 'ExchangesController@index')->name('exchange');
     Route::get('/user', 'UsersController@index')->name('user');
+    Route::post('/exchange', 'ExchangesController@post')->name('exchange.post');
 
-    Route::get('api/user', function(Request $request) {
-        $userId = Auth::user()->id;
-        $user = User::find($userId);
-        return new UserResource($user);
-    });
-
+    Route::get('api/user', 'UsersController@apiUser')->name('user.api');
     Route::any('api/exchange', function (Request $request) {
-
         $exchanged_id = $request['exchanged_cur'];
         $received_id = $request['received_cur'];
         $amount = $request['amount'];
@@ -51,7 +46,6 @@ Route::middleware(['auth'])->group(function() {
         if($amount * $rate > $exchanged_balance->amount) {
             die('Нет средств на транзакцию');
         } else {
-
             $exchange = Exchange::create([
                 'exchanged_currency' => $exchanged_id,
                 'received_currency' => $received_id,
@@ -66,7 +60,6 @@ Route::middleware(['auth'])->group(function() {
             $exchanged_balance->save();
             $received_balance->save();
         }
-
         return new UserResource($user);
     });
 
@@ -85,6 +78,4 @@ Route::middleware(['auth'])->group(function() {
         $exchanges = Exchange::whereDate('date', Carbon::today())->whereIn('exchanged_currency', $balances_id)->get();
         return new ExchangesCollection($exchanges);
     });
-
-    Route::post('/exchange', 'ExchangesController@post')->name('exchange.post');
 });

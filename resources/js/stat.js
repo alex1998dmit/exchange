@@ -1,11 +1,11 @@
 import $ from 'jquery';
-import { updateRate } from './utilities';
+import { updateRate, roundToTwoDecimal } from './utilities';
 
 const getDifferenceBetweenRates = (newRate, oldRate) =>
-  Math.round((newRate - oldRate) * 100) / 100;
+  roundToTwoDecimal(newRate - oldRate);
 
 const getReceivedAmount = (amount, rate) =>
-  Math.round(amount * rate / 100 * 100);
+  roundToTwoDecimal(amount * rate);
 
 const showExchanges = (exchanges, currentRates) => {
   const blockWithAllExchanges = $('#exchanges-block');

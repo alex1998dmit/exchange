@@ -74,7 +74,7 @@ $(document).ready(() => {
             console.log('more');
             console.log(amount_warning_sign);
           if (!amount_warning_sign) {
-            $('#amount_label').append(`<span id="amount_warning_sign" style="color:red">У вас недостаточно средств на счету,максимально доступно для обмена: ${maxPossibleAmount} </span>`);
+            $('#amount_label').append(`<span id="amount_warning_sign" style="color:red">Maximum amount to exchange: ${maxPossibleAmount} </span>`);
             $('#amount_to_exchange').addClass('border-danger');
             amount_warning_sign = true;
           }

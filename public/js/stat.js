@@ -11569,11 +11569,7 @@ function () {
   };
 }();
 var roundToTwoDecimal = function roundToTwoDecimal(number) {
-<<<<<<< HEAD
-  return Math.round(number * 100) / 100;
-=======
   return Math.floor(number * 100) / 100;
->>>>>>> 3c618adc42c74cfdcd95b83255e225e7c4af9429
 };
 
 /***/ }),

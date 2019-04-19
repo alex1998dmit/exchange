@@ -90,7 +90,7 @@ $(document).ready(() => {
         }
       
         const url = 'api/exchange';
-        const exchangeCurrencyId = exchangeBalance.id;
+        const exchangeCurrencyId = exchangeBalance.balance_id;
         const receivedCurrencyId = $('#received_currency').children(":selected").attr("id");
         const amount = $('#amount_to_exchange').val();
       

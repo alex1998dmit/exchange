@@ -6,4 +6,4 @@ export const updateRate = async (url) => {
 };
 
 export const roundToTwoDecimal = (number) =>
-  Math.round(number * 100) / 100;
+  Math.floor(number * 100) / 100;
